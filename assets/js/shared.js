@@ -130,10 +130,10 @@
     const start = new Date(ev.date), end = new Date(start.getTime() + (ev.hours || 3) * 36e5);
     const q = new URLSearchParams({
       action: 'TEMPLATE',
-      text: `${ev.name} · ${WEDDING.bride.name} & ${WEDDING.groom.name}`,
+      text: `${ev.name} · ${WEDDING.groom.name} एवं ${WEDDING.bride.name}`,
       dates: `${gcal(start)}/${gcal(end)}`,
       location: `${ev.venue}, ${ev.address}`,
-      details: `${ev.note}${ev.dress ? ` Dress code: ${ev.dress}.` : ''} ${WEDDING.hashtag}`,
+      details: `${ev.note}${ev.dress ? ` परिधान: ${ev.dress}।` : ''} ${WEDDING.hashtag}`,
     });
     return 'https://calendar.google.com/calendar/render?' + q;
   }

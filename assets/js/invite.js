@@ -18,7 +18,7 @@
   const wed = W.event('wedding') || D.events.find(e => /wedding|vivah|shaadi|pheras|nikah/i.test(e.name)) || D.events[D.events.length - 1];
   const [A, B] = D.side === 'groom' ? [D.groom, D.bride] : [D.bride, D.groom];
   const names = [A.name, B.name].filter(Boolean);
-  const couple = names.join(' & ') || 'the couple';
+  const couple = names.join(' एवं ') || 'वर-वधू';
   const preview = CFG.mode === 'preview';
   const dt = D.dateText, hasDate = !!(D.date && dt.day);
 
@@ -39,8 +39,7 @@
 
   /* ---------- the gold coin on the doors ---------- */
   function coin() {
-    const [a, b] = [A.name, B.name].map(n => [...(n || '')][0] || '');
-    const t = a + b, beads = [];
+    const t = D.initials || 'VR', beads = [];
     for (let i = 0; i < 36; i++) { const r = i / 36 * Math.PI * 2; beads.push(`<circle cx="${f1(43 * Math.cos(r))}" cy="${f1(43 * Math.sin(r))}" r="1.5"/>`); }
     return `<svg viewBox="-50 -50 100 100" aria-hidden="true"><defs><radialGradient id="cn" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#f9e7ad"/><stop offset=".5" stop-color="#d9aa4c"/><stop offset="1" stop-color="#946a1f"/></radialGradient></defs>
       <circle r="48" fill="url(#cn)" stroke="#7a5418" stroke-width="1"/><g fill="#fff1c4" opacity=".75">${beads.join('')}</g>
@@ -77,9 +76,9 @@
       <h3>${esc(e.name)}</h3>
       ${e.dateText || e.time ? `<p class="ev-when">${e.date ? `${esc(e.day)} · ${esc(e.short)}` : esc(e.dateText)}${e.time ? `<span>${esc(e.time)}</span>` : ''}</p>` : ''}
       ${where ? `<p class="ev-venue">${esc(where)}${e.venue && e.address ? `<span>${esc(e.address)}</span>` : ''}</p>` : ''}
-      ${e.dress ? `<p class="ev-dress">Dress: ${esc(e.dress)}</p>` : ''}
+      ${e.dress ? `<p class="ev-dress">परिधान: ${esc(e.dress)}</p>` : ''}
       ${e.note ? `<p class="ev-note">${esc(e.note)}</p>` : ''}
-      ${where || e.map || e.date ? `<div class="ev-links">${where || e.map ? `<a class="pill" href="${esc(W.mapUrl(e))}" ${ext}>${IC.pin}Directions</a>` : ''}${e.date ? `<a class="pill" href="${esc(W.calUrl(e))}" ${ext}>${IC.cal}Save date</a>` : ''}</div>` : ''}
+      ${where || e.map || e.date ? `<div class="ev-links">${where || e.map ? `<a class="pill" href="${esc(W.mapUrl(e))}" ${ext}>${IC.pin}स्थान / मार्ग</a>` : ''}${e.date ? `<a class="pill" href="${esc(W.calUrl(e))}" ${ext}>${IC.cal}कैलेंडर में जोड़ें</a>` : ''}</div>` : ''}
     </div></li>`;
   };
   const person = (p, d) => p.name ? `<div class="pp" data-reveal="bloom" style="--d:${d}s">${p.line ? `<p class="par">${esc(p.line)}</p>` : ''}<p class="nm">${esc(p.full || p.name)}</p></div>` : '';
@@ -96,12 +95,12 @@
       <div class="hero-copy">
         ${D.invocation ? `<p class="invoc" lang="hi" data-reveal="fade">${esc(D.invocation)}</p>` : ''}
         <h1 class="hn" data-reveal style="--d:.2s">${names.length > 1
-          ? `<span class="hn-a">${esc(A.name)}</span><span class="weds">weds</span><span class="hn-b">${esc(B.name)}</span>`
-          : `<span class="hn-a">${esc(names[0] || 'You’re invited')}</span>`}</h1>
+          ? `<span class="hn-a">${esc(A.name)}</span><span class="weds">संग</span><span class="hn-b">${esc(B.name)}</span>`
+          : `<span class="hn-a">${esc(names[0] || 'सादर निमंत्रण')}</span>`}</h1>
         ${heroDate ? `<p class="hd" data-reveal style="--d:.45s">${esc(heroDate)}</p>` : ''}
         ${D.city ? `<p class="hc" data-reveal style="--d:.55s">${esc(D.city)}</p>` : ''}
       </div>
-      <button class="cue" type="button" data-reveal="fade" style="--d:1s"><span>Scroll to walk in</span>${IC.down}</button>
+      <button class="cue" type="button" data-reveal="fade" style="--d:1s"><span>प्रवेश करने के लिए नीचे स्क्रॉल करें</span>${IC.down}</button>
     </div>
   </section>
 
@@ -111,10 +110,10 @@
     ${D.hosts ? `<p class="hosts" data-reveal="bloom">${esc(D.hosts)}</p>` : ''}
     ${D.inviteLine ? `<p class="line" data-reveal="bloom" style="--d:.1s">${esc(D.inviteLine)}</p>` : ''}
     ${D.hosts || D.inviteLine ? orn : ''}
-    <h2 class="sr">${names.length > 1 ? `${esc(A.full || A.name)} and ${esc(B.full || B.name)}` : esc(names[0] || 'You’re invited')}</h2>
+    <h2 class="sr">${names.length > 1 ? `${esc(A.full || A.name)} एवं ${esc(B.full || B.name)}` : esc(names[0] || 'सादर निमंत्रण')}</h2>
     <div class="couple" aria-hidden="true">
       ${person(A, .15)}
-      ${names.length > 1 ? '<p class="and" data-reveal="bloom" style="--d:.25s">and</p>' : ''}
+      ${names.length > 1 ? '<p class="and" data-reveal="bloom" style="--d:.25s">संग</p>' : ''}
       ${person(B, .35)}
     </div>
     ${D.grandparents ? `<p class="gp" data-reveal="fade">${esc(D.grandparents)}</p>` : ''}
@@ -122,19 +121,19 @@
   </section>
 
   ${hasDate ? `<section class="date" id="date">
-    ${head(ON.scratch ? 'A little surprise' : 'Mark the day', 'Save the date')}
+    ${head(ON.scratch ? 'मांगलिक संदेश' : 'शुभ दिन', 'शुभ विवाह लग्न एवं तिथि')}
     <div class="sd" data-reveal>
       <div class="sd-in"><p class="lbl">${esc(dt.weekday)}</p><p class="big">${esc(dt.day)}</p><p class="lbl">${esc(dt.month)} · ${esc(dt.year)}</p>${D.city ? `<p class="where">${esc(D.city)}</p>` : ''}</div>
       ${ON.scratch ? '<canvas aria-label="Scratch to reveal the wedding date" role="img"></canvas>' : ''}
     </div>
-    ${ON.scratch ? '<button class="linkbtn" type="button" id="revealAll">Tap here to reveal instead</button>' : ''}
+    ${ON.scratch ? '<button class="linkbtn" type="button" id="revealAll">तिथि देखने के लिए यहाँ टैप करें</button>' : ''}
   </section>` : ''}
 
-  ${ON.countdown && hasDate ? `<section class="cd-wrap" aria-label="Countdown">
-    ${head('Counting down', 'Until the big day')}
+  ${ON.countdown && hasDate ? `<section class="cd-wrap" aria-label="शुभ घड़ी की प्रतीक्षा">
+    ${head('शुभ घड़ी की प्रतीक्षा', 'विवाह के पावन दिवस तक')}
     <div class="cd" data-reveal role="timer" aria-live="off">
-      <div><b id="cd-d">0</b><small>Days</small></div><div><b id="cd-h">00</b><small>Hours</small></div>
-      <div><b id="cd-m">00</b><small>Minutes</small></div><div><b id="cd-s">00</b><small>Seconds</small></div>
+      <div><b id="cd-d">0</b><small>दिन</small></div><div><b id="cd-h">00</b><small>घंटे</small></div>
+      <div><b id="cd-m">00</b><small>मिनट</small></div><div><b id="cd-s">00</b><small>सेकंड</small></div>
     </div>
     <p class="cd-note" id="cd-note" data-reveal="fade"></p>
   </section>` : ''}
@@ -142,28 +141,28 @@
   ${D.welcome ? `<section class="welcome" id="us">${orn}<p class="msg" id="welcome" data-reveal="fade">${esc(D.welcome)}</p></section>` : ''}
 
   ${D.events.length ? `<section id="events">
-    ${head('Mark your calendar', D.events.length > 1 ? 'The celebrations' : 'The celebration')}
+    ${head('मांगलिक उत्सव', D.events.length > 1 ? 'विवाह कार्यक्रम' : 'विवाह कार्यक्रम')}
     <ol class="events">${D.events.map(evCard).join('')}</ol>
   </section>` : ''}
 
   ${ON.story && D.story.length ? `<section id="story">
-    ${head('How it began', 'Our story')}
+    ${head('यादों के झरोखे से', 'हमारी कहानी')}
     <ol class="chaps">${D.story.map(s => `<li data-reveal>${s.year ? `<p class="yr">${esc(s.year)}</p>` : ''}${s.title ? `<h3>${esc(s.title)}</h3>` : ''}${s.text ? `<p>${esc(s.text)}</p>` : ''}${safeUrl(s.photo) ? `<img src="${esc(small(s.photo))}" alt="" loading="lazy" decoding="async">` : ''}</li>`).join('')}</ol>
   </section>` : ''}
 
   ${moments.length ? `<section id="gallery">
-    ${head('Our moments', 'Before the big day')}
+    ${head('सुखद स्मृतियाँ', 'स्नेहिल पल')}
     <div class="gal">${moments.map((u, i) => `<button type="button" data-full="${esc(u)}" aria-label="Open photo ${i + 1} of ${moments.length}" data-reveal style="--r:${[-3, 2.5, -1.5, 3][i % 4]}deg"><img src="${esc(small(u))}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div>
     <dialog class="box" id="galBox"><button type="button" class="x" aria-label="Close photo">×</button><img alt=""></dialog>
   </section>` : ''}
 
   ${ON.travel && D.travel.length ? `<section id="travel">
-    ${head('Getting here', 'Travel & stay')}
+    ${head('आगमन जानकारी', 'मार्ग एवं आवास')}
     <div class="cards">${D.travel.map((t, i) => `<div class="tc" data-reveal style="--d:${i * .08}s"><div class="i">${IC.pin}</div><div><h3>${esc(t.title)}</h3>${t.text ? `<p>${esc(t.text)}</p>` : ''}</div></div>`).join('')}</div>
   </section>` : ''}
 
   ${ON.contacts && D.contacts.length ? `<section id="contacts">
-    ${head('Questions?', 'Call or message')}
+    ${head('संपर्क सूत्र', 'पूछताछ एवं सहयोग')}
     <div class="cards">${D.contacts.map((c, i) => `<div class="tc contact" data-reveal style="--d:${i * .08}s"><div class="i">${IC.diya}</div><div class="who"><h3>${esc(c.name)}</h3>${c.role ? `<span class="role">${esc(c.role)}</span>` : ''}${c.phone ? `<span class="ph">${esc(c.phone)}</span>` : ''}</div>
       ${tel(c.phone).length >= 8 ? `<div class="acts"><a href="tel:${esc(tel(c.phone))}" aria-label="Call ${esc(c.name)}">${IC.phone}</a><a href="https://wa.me/${esc(waNum(c.phone))}" ${ext} aria-label="WhatsApp ${esc(c.name)}">${IC.wa}</a></div>` : ''}</div>`).join('')}</div>
   </section>` : ''}
@@ -198,19 +197,19 @@
 
   <footer data-reveal="fade">
     ${orn}
-    <p class="bless">With the blessings of our elders, and with love,</p>
-    ${names.length ? `<p class="sig">${esc(names.join(' & '))}</p>` : ''}
+    <p class="bless">बुजुर्गों के पावन आशीर्वाद एवं स्नेह सहित,</p>
+    ${names.length ? `<p class="sig">${esc(names.join(' एवं '))}</p>` : ''}
     ${D.families ? `<p class="fam">${esc(D.families)}</p>` : ''}
     ${D.hashtag ? `<p class="hash">${esc(D.hashtag)}</p>` : ''}
-    ${preview ? '' : `<button class="pill" type="button" id="share">${IC.share}Share the invite</button>`}
+    ${preview ? '' : `<button class="pill" type="button" id="share">${IC.share}निमंत्रण पत्र साझा करें</button>`}
     ${CFG.branding !== false ? `<br><a class="made" href="${esc(CFG.madeWithUrl || 'https://aaiyega.com/')}" ${ext}>Made with Aaiyega</a>` : ''}
   </footer>`;
 
   if ($('#welcome')) W.splitWords($('#welcome'));
   $('#coin').innerHTML = coin();
-  $('#gNames').textContent = names.join(' & ');
+  $('#gNames').textContent = names.join(' संग ');
   $('#gNames').hidden = !names.length;
-  if (guest) { $('#gTo').textContent = `Dear ${guest},`; $('#gTo').hidden = false; }
+  if (guest) { $('#gTo').textContent = `आदरणीय ${guest},`; $('#gTo').hidden = false; }
   // A long single name can't wrap: shrink it to the column instead of letting it run off the page.
   W.refit(() => W.fit([$('#gNames'), ...$$('.hn span'), ...$$('.nm')], { min: 24 }));
 
@@ -219,7 +218,7 @@
   /* ---------- song pill: W.music is the host's YouTube song, the built-in tune, or off ---------- */
   const S = D.song, snd = $('#snd'), meta = (t, b) => { $('.meta b', snd).textContent = t; $('.meta small', snd).textContent = b; };
   const yt = S.mode === 'youtube' && S.youtube;
-  const title = (yt && S.title) || 'Our song', by = (yt && S.by) || 'tap to play';
+  const title = (yt && S.title) || 'मांगलिक धुन', by = (yt && S.by) || 'सुनने के लिए टैप करें';
   if (yt) $('.disc', snd).style.backgroundImage = `url("https://i.ytimg.com/vi/${encodeURIComponent(S.youtube)}/mqdefault.jpg")`;
   meta(title, by);
   let wideT;
@@ -229,8 +228,8 @@
     W.music.onChange(on => {
       if (on !== was) widen();
       was = on;
-      meta(title, on ? (yt && S.by) || 'now playing' : by);
-      snd.classList.toggle('on', on); snd.setAttribute('aria-pressed', on); snd.setAttribute('aria-label', `${on ? 'Pause' : 'Play'} ${title}`);
+      meta(title, on ? (yt && S.by) || 'धुन बज रही है' : by);
+      snd.classList.toggle('on', on); snd.setAttribute('aria-pressed', on); snd.setAttribute('aria-label', `${on ? 'रोकें' : 'बजाएं'} ${title}`);
     });
     snd.addEventListener('click', () => W.music.toggle());
   }
@@ -319,8 +318,8 @@
     for (let i = 0; i < 16; i++) { c.rotate(Math.PI / 8); c.beginPath(); c.ellipse(0, -52, 7, 16, 0, 0, 6.29); c.stroke(); }
     c.restore();
     for (let i = 0; i < w * h / 70; i++) { c.fillStyle = `rgba(255,250,230,${W.rnd(.1, .55)})`; c.fillRect(W.rnd(0, w), W.rnd(0, h), W.rnd(.5, 1.6), W.rnd(.5, 1.6)); }
-    c.fillStyle = '#5b2615'; c.font = '15px Marcellus, Georgia, serif'; c.textAlign = 'center';
-    c.fillText('SCRATCH TO REVEAL', w / 2, h / 2 + 5);
+    c.fillStyle = '#5b2615'; c.font = '15px "Tiro Devanagari Hindi", Marcellus, serif'; c.textAlign = 'center';
+    c.fillText('देखने के लिए स्क्रैच करें', w / 2, h / 2 + 5);
   }
   const sc = $('.sd canvas');
   if (sc) {
@@ -344,7 +343,7 @@
         const v = k === 'd' ? String(t[k]) : W.pad2(t[k]);
         if (cdEls[k].textContent !== v) cdEls[k].textContent = v;
       }
-      $('#cd-note').textContent = t.done ? 'The celebrations have begun. Thank you for your blessings.'
+      $('#cd-note').textContent = t.done ? 'मांगलिक उत्सव प्रारंभ हो चुका है। आपके स्नेहिल आशीर्वाद के लिए सादर धन्यवाद।'
         : `${heroDate}${D.city ? ` · ${D.city}` : ''}`;
     });
   }
@@ -359,10 +358,10 @@
   /* ---------- share ---------- */
   const share = $('#share');
   if (share) share.addEventListener('click', () => {
-    const data = { title: document.title, text: names.length ? `You are invited to the wedding of ${couple}` : 'You are invited', url: location.href.split('#')[0] };
+    const data = { title: document.title, text: names.length ? `विकास एवं राधा के शुभ विवाह का निमंत्रण पत्र` : 'सादर निमंत्रण', url: location.href.split('#')[0] };
     const label = share.lastChild;  // the text after the icon
     if (navigator.share) navigator.share(data).catch(() => {});
-    else if (navigator.clipboard) navigator.clipboard.writeText(data.url).then(() => { label.textContent = 'Link copied'; setTimeout(() => (label.textContent = 'Share the invite'), 1600); }, () => {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(data.url).then(() => { label.textContent = 'लिंक कॉपी हो गया'; setTimeout(() => (label.textContent = 'निमंत्रण पत्र साझा करें'), 1600); }, () => {});
   });
 
   /* ---------- RSVP (field names are W.rsvp's contract) ---------- */
